@@ -1,18 +1,7 @@
 import numpy as np
 import torch
 import torch.nn as nn
-
-
-class ConvBnBlock(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, groups=1):
-        super(ConvBnBlock, self).__init__()
-        self.conv = nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
-                              kernel_size=kernel_size, stride=stride, padding=padding, groups=groups,
-                              bias=False)
-        self.bn = nn.BatchNorm2d(num_features=out_channels)
-
-    def forward(self, inputs):
-        return self.bn(self.conv(inputs))
+from common.module import ConvBnBlock
 
 
 class RepVGGBlock(nn.Module):
@@ -125,5 +114,5 @@ if __name__ == '__main__':
 
     deploy_model = repvgg_model_convert(repvgg_block)
     deploy_y = deploy_model(dummpy_input)
-    diff = inference_y-deploy_y
+    diff = inference_y - deploy_y
     print(torch.abs(diff).sum())
